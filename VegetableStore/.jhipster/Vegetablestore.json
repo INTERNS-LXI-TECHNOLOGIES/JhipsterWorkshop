@@ -1,0 +1,40 @@
+{
+  "applications": "*",
+  "changelogDate": "20221104111215",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "vegetablestore",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "price",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "stock",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "minOrderQuantity",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "base64Image",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Vegetablestore",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}
