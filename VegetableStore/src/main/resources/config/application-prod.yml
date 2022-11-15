@@ -54,7 +54,7 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://localhost:3306/vegetablestore?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
     username: root
-    password: Mubashir24092000
+    password:
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -136,7 +136,7 @@ jhipster:
         # - In the JHipster Registry (which includes a Spring Cloud Config server)
         # - In a separate `application-prod.yml` file, in the same folder as your executable JAR file
         # - In the `JHIPSTER_SECURITY_AUTHENTICATION_JWT_BASE64_SECRET` environment variable
-        base64-secret: NjE3ZTNhZGY2YzAyMmQ0M2ZjN2UzNWYwNDE5MmY0YjY3MjU3OWY1ZjY5NzllYjhmYjNkOThhYjYxMWI2ZDg1MTczY2Q4Y2Q4ZTE3M2ZhMDdiMTcyODI1ZGI2ZWUwMWY1M2UxMjk5YzM0YjllNmM2MjVjMDIxZjdjOGZiY2ViZTE=
+        base64-secret: YWMxZWZkMWU3N2E2OTI0YWQ4YmE5MGRmZjkyNzhhMzMxN2Y5OWYwMjA1ZjE0ZGM0Mjg3NzdkM2VmYjIyNjU2MGY3Nzg5YjVkMGMzMDBjZTNlZTdmYzE5ZmE0NmUyZWNiMDlkMDkzNGVhZDkzNzRmNGMzMzkwMjQ0MzI5NTczNDI=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
