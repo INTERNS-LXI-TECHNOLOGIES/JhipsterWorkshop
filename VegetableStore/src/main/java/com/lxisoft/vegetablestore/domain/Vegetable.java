@@ -1,6 +1,8 @@
 package com.lxisoft.vegetablestore.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -31,8 +33,16 @@ public class Vegetable implements Serializable {
     @Column(name = "min_order_quantity")
     private String minOrderQuantity;
 
-    @Column(name = "base_64_image")
+    @Transient
     private String base64Image;
+
+
+    @Lob
+    @Column(name = "image",columnDefinition = "blob")
+    private byte[]image;
+    @Transient
+    private MultipartFile imageFile;
+
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "vegetables" }, allowSetters = true)
