@@ -56,5 +56,5 @@ public interface CategoryService {
      */
     void delete(Long id);
 
-    public List<Vegetable> findVegetablesByCategorId(int id);
+    List<Vegetable> findVegetablesByCategoryId(long id);
 }

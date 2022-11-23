@@ -6,6 +6,7 @@ entity Vegetable {
     stock String,
     minOrderQuantity String,
     base64Image String,
+    image Blob
 
     
 }

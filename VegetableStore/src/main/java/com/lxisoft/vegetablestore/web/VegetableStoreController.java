@@ -87,9 +87,9 @@ return "redirect:/";
 
 
 @GetMapping("/categories")
-public String findVegetablesByCategorId(@RequestParam(required=false,name="id")Integer id, Model model) {
+public String findVegetablesByCategorId(@RequestParam(required=false,name="id")long id, Model model) {
 
-   model.addAttribute("vegetables",categoryService.findVegetablesByCategorId(id));
+   model.addAttribute("vegetables",categoryService.findVegetablesByCategoryId(id));
     model.addAttribute("categories",categoryService.findAll());
     return "showResult";
 }

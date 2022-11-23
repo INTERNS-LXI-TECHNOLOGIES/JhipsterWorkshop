@@ -28,6 +28,11 @@
     {
       "fieldName": "base64Image",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "image",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "any"
     }
   ],
   "fluentMethods": true,

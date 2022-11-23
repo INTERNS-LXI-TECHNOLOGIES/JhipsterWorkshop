@@ -57,8 +57,7 @@ public interface VegetableService {
      */
     void delete(Long id);
 
-    public List<Vegetable> search(String word);
+    void image(String name, HttpServletResponse response) throws IOException;
 
-    public void image(String name, HttpServletResponse response) throws IOException;
-
+    List<Vegetable> search(String word);
 }

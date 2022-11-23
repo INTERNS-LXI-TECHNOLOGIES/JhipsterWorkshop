@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
+import java.util.Base64;
 import javax.persistence.*;
 
 /**
@@ -33,16 +34,22 @@ public class Vegetable implements Serializable {
     @Column(name = "min_order_quantity")
     private String minOrderQuantity;
 
+
+    @Transient
+    private MultipartFile imageFile;
+
+
+
     @Transient
     private String base64Image;
 
 
     @Lob
-    @Column(name = "image",columnDefinition = "blob")
-    private byte[]image;
-    @Transient
-    private MultipartFile imageFile;
+    @Column(name = "image")
+    private byte[] image;
 
+    @Column(name = "image_content_type")
+    private String imageContentType;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "vegetables" }, allowSetters = true)
@@ -93,6 +100,15 @@ public class Vegetable implements Serializable {
         return this.stock;
     }
 
+
+    public void setImageFile(MultipartFile imageFile) {
+        this.imageFile = imageFile;
+    }
+
+    public MultipartFile getImageFile() {
+        return imageFile;
+    }
+
     public Vegetable stock(String stock) {
         this.setStock(stock);
         return this;
@@ -116,6 +132,9 @@ public class Vegetable implements Serializable {
     }
 
     public String getBase64Image() {
+
+        base64Image = Base64.getEncoder().encodeToString(this.image);
+
         return this.base64Image;
     }
 
@@ -126,6 +145,32 @@ public class Vegetable implements Serializable {
 
     public void setBase64Image(String base64Image) {
         this.base64Image = base64Image;
+    }
+
+    public byte[] getImage() {
+        return this.image;
+    }
+
+    public Vegetable image(byte[] image) {
+        this.setImage(image);
+        return this;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public String getImageContentType() {
+        return this.imageContentType;
+    }
+
+    public Vegetable imageContentType(String imageContentType) {
+        this.imageContentType = imageContentType;
+        return this;
+    }
+
+    public void setImageContentType(String imageContentType) {
+        this.imageContentType = imageContentType;
     }
 
     public Category getCategory() {
@@ -170,6 +215,8 @@ public class Vegetable implements Serializable {
             ", stock='" + getStock() + "'" +
             ", minOrderQuantity='" + getMinOrderQuantity() + "'" +
             ", base64Image='" + getBase64Image() + "'" +
+            ", image='" + getImage() + "'" +
+            ", imageContentType='" + getImageContentType() + "'" +
             "}";
     }
 }

@@ -74,7 +74,8 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.deleteById(id);
     }
 
-    public List<Vegetable> findVegetablesByCategorId(int id) {
+
+    public List<Vegetable> findVegetablesByCategoryId(long id) {
 
 
         return categoryRepository.findAllVegetableInCate_id(id);

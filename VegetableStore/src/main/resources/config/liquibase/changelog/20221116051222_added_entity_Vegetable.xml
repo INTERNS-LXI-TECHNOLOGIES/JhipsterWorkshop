@@ -29,6 +29,12 @@
             <column name="base_64_image" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="image" type="${blobType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="image_content_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="category_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -58,6 +64,8 @@
             <column name="stock" type="string"/>
             <column name="min_order_quantity" type="string"/>
             <column name="base_64_image" type="string"/>
+            <column name="image" type="blob"/>
+            <column name="image_content_type" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>
