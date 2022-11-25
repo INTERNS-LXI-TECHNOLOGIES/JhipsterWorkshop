@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Base64;
 import javax.persistence.*;
 
+
 /**
  * A Vegetable.
  */
@@ -143,7 +144,7 @@ public class Vegetable implements Serializable {
         return this;
     }
 
-    public void setBase64Image(String base64Image) {
+    public void setBase64Image(String  base64Image) {
         this.base64Image = base64Image;
     }
 
