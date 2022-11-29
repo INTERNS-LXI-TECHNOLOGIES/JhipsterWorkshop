@@ -5,7 +5,7 @@
 
 <style>
    h1{
-color:white;	
+color:white;
 background-color:red;
 font-size:30px;
 height:40px;
@@ -51,35 +51,35 @@ border-color:red;
    <form th:action ="@{update-vegetable}" th:object="${vegetable}" enctype="multipart/form-data" method = "POST">
 
 
-    <center><img th:src="'data:image/jpg;base64,'+${vegetable.base64Image}" width = "300" height ="180"> </center>
+   <center><img th:src="'data:image/jpg;base64,'+${vegetable.get().base64Image}" width = "300" height ="180"> </center>
     <!-- id -->
    <div class = "form-group">
-   <input type = "hidden" name = "id" th:value ="${vegetable.id}">
+   <input type = "hidden" name = "id" th:value ="${vegetable.get().id}">
    </div>
 
 <!-- name -->
    <center><div class = "form-group">
    <label for = "form-control" th:text="#{name}"></label>
-           <input type = "text" class = "form-control" th:value ="${vegetable.name}" name = "name" required/>
+           <input type = "text" class = "form-control" th:value ="${vegetable.get().name}" name = "name" required/>
            </div></center>
 
 <!-- price -->
           <center><div class = "form-group">
            <label for = "form-control" th:text="#{rs}"></label>
-            <input type = "text" class = "form-control" th:value ="${vegetable.price}" name = "price" required/>
+            <input type = "text" class = "form-control" th:value ="${vegetable.get().price}" name = "price" required/>
               </div></center>
 
 <!-- stock -->
   <center><div class = "form-group">
            <label for = "form-control"th:text="#{stock}"></label>
-            <input type = "text" class = "form-control" th:value ="${vegetable.stock}" name = "stock" required/>
+            <input type = "text" class = "form-control" th:value ="${vegetable.get().stock}" name = "stock" required/>
               </div></center>
 
 
 <!-- order -->
   <center><div class = "form-group">
            <label for = "form-control" th:text="#{orderquantity}"></label>
-            <input type = "text" class = "form-control" th:value ="${vegetable.minOrderQuantity}" name = "minOrderQuantity" required/>
+            <input type = "text" class = "form-control" th:value ="${vegetable.get().minOrderQuantity}" name = "minOrderQuantity" required/>
               </div></center>
 
 
@@ -106,7 +106,7 @@ border-color:red;
 
 
      <center><input type = "submit" th:value = "#{update}" class ="subBtn"/></center>
-     
+
 
  </form>
 </body>

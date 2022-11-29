@@ -17,15 +17,15 @@ public interface VegetableService {
      * @param vegetable the entity to save.
      * @return the persisted entity.
      */
-    Vegetable save(Vegetable vegetable);
+    Vegetable save(Vegetable vegetable) throws IOException;
 
     /**
      * Updates a vegetable.
      *
-     * @param vegetable the entity to update.
+      * @param vegetable the entity to update.
      * @return the persisted entity.
      */
-    Vegetable update(Vegetable vegetable);
+    Vegetable update(Vegetable vegetable) throws IOException;
 
     /**
      * Partially updates a vegetable.

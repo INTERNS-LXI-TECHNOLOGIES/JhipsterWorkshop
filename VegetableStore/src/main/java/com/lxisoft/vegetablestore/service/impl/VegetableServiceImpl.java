@@ -32,31 +32,31 @@ public class VegetableServiceImpl implements VegetableService {
     }
 
     @Override
-    public Vegetable save(Vegetable vegetable) {
+    public Vegetable save(Vegetable vegetable) throws IOException {
         log.debug("Request to save Vegetable : {}", vegetable);
 
-        /*InputStream inputStream =  new BufferedInputStream(vegetable.getImageFile().getInputStream());
+        InputStream inputStream =  new BufferedInputStream(vegetable.getImageFile().getInputStream());
 
         byte[]image = new byte[inputStream.available()];
 
         inputStream.read(image);
 
-        vegetable.setImage(image);*/
+        vegetable.setImage(image);
 
         return vegetableRepository.save(vegetable);
     }
 
     @Override
-    public Vegetable update(Vegetable vegetable) {
+    public Vegetable update(Vegetable vegetable) throws IOException {
         log.debug("Request to update Vegetable : {}", vegetable);
 
-         /*InputStream inputStream =  new BufferedInputStream(vegetable.getImageFile().getInputStream());
+         InputStream inputStream =  new BufferedInputStream(vegetable.getImageFile().getInputStream());
 
         byte[]image = new byte[inputStream.available()];
 
         inputStream.read(image);
 
-        vegetable.setImage(image);*/
+        vegetable.setImage(image);
 
         return vegetableRepository.save(vegetable);
     }
