@@ -6,6 +6,7 @@ import com.lxisoft.vegetablestore.service.VegetableService;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -93,7 +94,15 @@ public class VegetableServiceImpl implements VegetableService {
     @Transactional(readOnly = true)
     public List<Vegetable> findAll() {
         log.debug("Request to get all Vegetables");
-        return vegetableRepository.findAll();
+
+        List<Vegetable> vegetables = vegetableRepository.findAll();
+
+        for(int i = 0; i <vegetables.size(); i++){
+
+            vegetables.get(i).getBase64Image();
+        }
+
+        return vegetables;
     }
 
     @Override
