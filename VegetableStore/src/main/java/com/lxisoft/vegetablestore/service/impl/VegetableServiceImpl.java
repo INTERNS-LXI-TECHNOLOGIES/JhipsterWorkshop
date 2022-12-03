@@ -6,7 +6,6 @@ import com.lxisoft.vegetablestore.service.VegetableService;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -34,6 +33,7 @@ public class VegetableServiceImpl implements VegetableService {
 
     @Override
     public Vegetable save(Vegetable vegetable) throws IOException {
+
         log.debug("Request to save Vegetable : {}", vegetable);
 
         InputStream inputStream =  new BufferedInputStream(vegetable.getImageFile().getInputStream());
@@ -43,6 +43,7 @@ public class VegetableServiceImpl implements VegetableService {
         inputStream.read(image);
 
         vegetable.setImage(image);
+
 
         return vegetableRepository.save(vegetable);
     }

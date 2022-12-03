@@ -133,7 +133,7 @@ public class Vegetable implements Serializable {
 
     public String getBase64Image() {
 
-        base64Image = Base64.getEncoder().encodeToString(this.image);
+        //base64Image = Base64.getEncoder().encodeToString(this.image);
 
         return this.base64Image;
     }
