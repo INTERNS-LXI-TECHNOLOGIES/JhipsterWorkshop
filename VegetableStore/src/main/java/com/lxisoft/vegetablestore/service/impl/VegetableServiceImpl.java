@@ -6,6 +6,7 @@ import com.lxisoft.vegetablestore.service.VegetableService;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -36,6 +37,12 @@ public class VegetableServiceImpl implements VegetableService {
 
         log.debug("Request to save Vegetable : {}", vegetable);
 
+
+//setting vegetable image content type
+        vegetable.setImageContentType(vegetable.getImageFile().getContentType());
+
+
+//converting Multipart to inputstream
         InputStream inputStream =  new BufferedInputStream(vegetable.getImageFile().getInputStream());
 
         byte[]image = new byte[inputStream.available()];
@@ -44,13 +51,14 @@ public class VegetableServiceImpl implements VegetableService {
 
         vegetable.setImage(image);
 
-
         return vegetableRepository.save(vegetable);
     }
 
     @Override
     public Vegetable update(Vegetable vegetable) throws IOException {
         log.debug("Request to update Vegetable : {}", vegetable);
+
+        vegetable.setImageContentType(vegetable.getImageFile().getContentType());
 
          InputStream inputStream =  new BufferedInputStream(vegetable.getImageFile().getInputStream());
 
@@ -100,7 +108,8 @@ public class VegetableServiceImpl implements VegetableService {
 
         for(int i = 0; i <vegetables.size(); i++){
 
-            vegetables.get(i).getBase64Image();
+String base64Image = Base64.getEncoder().encodeToString(vegetables.get(i).getImage());
+            vegetables.get(i).setBase64Image(base64Image);
         }
 
         return vegetables;
@@ -110,7 +119,12 @@ public class VegetableServiceImpl implements VegetableService {
     @Transactional(readOnly = true)
     public Optional<Vegetable> findOne(Long id) {
         log.debug("Request to get Vegetable : {}", id);
-        return vegetableRepository.findById(id);
+
+		Optional<Vegetable> vegetable = vegetableRepository.findById(id);
+
+		String base64Image = Base64.getEncoder().encodeToString(vegetable.get().getImage());
+		vegetable.get().setBase64Image(base64Image);
+        return vegetable;
     }
 
     @Override

@@ -52,7 +52,7 @@ return "addVegetable";
 
 @PostMapping("/create-vegetable")
 public String createVegetable(@ModelAttribute Vegetable vegetable, Model model) throws IOException {
-
+    System.out.println(vegetable.getImageFile().getContentType());
     vegetableService.save(vegetable);
 
     model.addAttribute("categories",categoryService.findAll());
