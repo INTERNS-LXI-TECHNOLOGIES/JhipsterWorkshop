@@ -22,7 +22,7 @@ public class Category implements Serializable {
     private Long id;
 
     @Column(name = "category")
-    private String category;
+    private String categoryType;
 
     @OneToMany(mappedBy = "category")
     @JsonIgnoreProperties(value = { "category" }, allowSetters = true)
@@ -43,17 +43,17 @@ public class Category implements Serializable {
         this.id = id;
     }
 
-    public String getCategory() {
-        return this.category;
+    public String getCategoryType() {
+        return this.categoryType;
     }
 
-    public Category category(String category) {
-        this.setCategory(category);
+    public Category category(String categoryType) {
+        this.setCategoryType(categoryType);
         return this;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategoryType(String categoryType) {
+        this.categoryType = categoryType;
     }
 
     public Set<Vegetable> getVegetables() {
@@ -111,7 +111,7 @@ public class Category implements Serializable {
     public String toString() {
         return "Category{" +
             "id=" + getId() +
-            ", category='" + getCategory() + "'" +
+            ", category='" + getCategoryType() + "'" +
             "}";
     }
 }

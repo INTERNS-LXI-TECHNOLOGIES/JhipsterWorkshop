@@ -61,7 +61,7 @@ border:none;
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
                         <div th:each="category : ${categories}">
-                            <a style="color:black" th:href="@{categories(id=${category.id})}" th:value="${category.id}" name="id" class="dropdown-item" th:text="${category.category}"> </a>
+                            <a style="color:black" th:href="@{categories(id=${category.id})}" th:value="${category.id}" name="id" class="dropdown-item" th:text="${category.categoryType}"> </a>
 
                             <div class="dropdown-divider"></div>
 

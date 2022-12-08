@@ -87,7 +87,7 @@ border-color:red;
   <label for = "category" th:text="#{category}"></label>
   <select name ="category" class = "form-control" id = "">
 
-      <option th:value = "${category.id}" th:each="category : ${categories}" th:text="${category.category}"></option>
+      <option th:value = "${category.id}" th:each="category : ${categories}" th:text="${category.categoryType}"></option>
   </select>
 
   </div></center>

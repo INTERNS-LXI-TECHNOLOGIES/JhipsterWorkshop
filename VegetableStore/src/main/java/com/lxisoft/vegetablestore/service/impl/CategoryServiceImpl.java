@@ -45,8 +45,8 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository
             .findById(category.getId())
             .map(existingCategory -> {
-                if (category.getCategory() != null) {
-                    existingCategory.setCategory(category.getCategory());
+                if (category.getCategoryType() != null) {
+                    existingCategory.setCategoryType(category.getCategoryType());
                 }
 
                 return existingCategory;

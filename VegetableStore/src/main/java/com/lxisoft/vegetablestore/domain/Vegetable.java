@@ -39,7 +39,6 @@ public class Vegetable implements Serializable {
     private MultipartFile imageFile;
 
 
-
     @Transient
     private String base64Image;
 

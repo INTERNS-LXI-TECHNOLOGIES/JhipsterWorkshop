@@ -97,9 +97,9 @@ public String findVegetablesByCategorId(@RequestParam(required=false,name="id")l
 }
 
     @PostMapping("/create-category")
-    public String createCategories(@ModelAttribute Category category, Model model) {
+    public String createCategories(@ModelAttribute Category cat, Model model) {
 
-   categoryService.save(category);
+   categoryService.save(cat);
 
         model.addAttribute("categories",categoryService.findAll());
         return "addVegetable";

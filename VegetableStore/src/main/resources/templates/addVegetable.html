@@ -14,7 +14,7 @@
 <style>
 
   h1{
-color:white;	
+color:white;
 background-color:rgb(95, 95, 209);
 font-size:40px;
 height:65px;
@@ -39,10 +39,10 @@ padding:10px;
 
 <div align = "left">
 
-  
+
   <a th:href = "@{/}"><img src ="image?name=home.jpeg" alt="google-play" height = 60px  class="homeBtn">
     </a>
-    
+
     </div>
 
 <div class = "container">
@@ -151,7 +151,7 @@ padding:10px;
     <select name ="category"  class = "form-control" id = "category" th:placeholder = "#{selectcategory}">
 
 
-<option th:value = "${category.id}" th:each="category : ${categories}" th:text="${category.category}"></option>
+<option th:value = "${category.id}" th:each="category : ${categories}" th:text="${category.categoryType}"></option>
 
 
 </select>
