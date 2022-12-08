@@ -24,6 +24,7 @@ public class Category implements Serializable {
     @Column(name = "category")
     private String categoryType;
 
+
     @OneToMany(mappedBy = "category")
     @JsonIgnoreProperties(value = { "category" }, allowSetters = true)
     private Set<Vegetable> vegetables = new HashSet<>();
@@ -54,6 +55,7 @@ public class Category implements Serializable {
 
     public void setCategoryType(String categoryType) {
         this.categoryType = categoryType;
+
     }
 
     public Set<Vegetable> getVegetables() {
@@ -112,6 +114,7 @@ public class Category implements Serializable {
         return "Category{" +
             "id=" + getId() +
             ", category='" + getCategoryType() + "'" +
+
             "}";
     }
 }

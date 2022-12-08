@@ -49,8 +49,10 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://localhost:3306/vegetablestore?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true
-    username: root
-    password: Mubashir24092000
+    #username: root
+    #password: Mubashir24092000
+    username: developer
+    password: BDj:zvF.TvZAwdK{FH_3
     hikari:
       poolName: Hikari
       auto-commit: false
