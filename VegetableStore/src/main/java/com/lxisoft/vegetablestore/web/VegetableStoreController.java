@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
+
 
 
 @Controller
@@ -52,7 +52,7 @@ return "addVegetable";
 
 @PostMapping("/create-vegetable")
 public String createVegetable(@ModelAttribute Vegetable vegetable, Model model) throws IOException {
-    System.out.println(vegetable.getImageFile().getContentType());
+
     vegetableService.save(vegetable);
 
     model.addAttribute("categories",categoryService.findAll());
@@ -63,9 +63,8 @@ public String createVegetable(@ModelAttribute Vegetable vegetable, Model model) 
 
 @GetMapping("/select-vegetable")
 public String selectVegetable(@RequestParam("id")long id, Model model) {
-Optional<Vegetable> v  =vegetableService.findOne(id);
-System.out.println(v.toString());
-        model.addAttribute("vegetable",v);
+
+        model.addAttribute("vegetable",vegetableService.findOne(id));
 
     model.addAttribute("categories",categoryService.findAll());
     return "updateVegetable";
