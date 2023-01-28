@@ -6,7 +6,7 @@
     <!--
         Added the constraints for entity Vegetable.
     -->
-    <changeSet id="20221116051222-2" author="jhipster">
+    <changeSet id="20230124062923-2" author="jhipster">
 
         <addForeignKeyConstraint baseColumnNames="category_id"
                                  baseTableName="vegetable"

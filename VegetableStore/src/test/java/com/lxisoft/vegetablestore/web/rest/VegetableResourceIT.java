@@ -2,6 +2,7 @@ package com.lxisoft.vegetablestore.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -114,7 +115,12 @@ class VegetableResourceIT {
         int databaseSizeBeforeCreate = vegetableRepository.findAll().size();
         // Create the Vegetable
         restVegetableMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(vegetable)))
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(vegetable))
+            )
             .andExpect(status().isCreated());
 
         // Validate the Vegetable in the database
@@ -140,7 +146,12 @@ class VegetableResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restVegetableMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(vegetable)))
+            .perform(
+                post(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(vegetable))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Vegetable in the database
@@ -221,6 +232,7 @@ class VegetableResourceIT {
         restVegetableMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, updatedVegetable.getId())
+                    .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(updatedVegetable))
             )
@@ -249,6 +261,7 @@ class VegetableResourceIT {
         restVegetableMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, vegetable.getId())
+                    .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(vegetable))
             )
@@ -269,6 +282,7 @@ class VegetableResourceIT {
         restVegetableMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .with(csrf())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(TestUtil.convertObjectToJsonBytes(vegetable))
             )
@@ -287,7 +301,12 @@ class VegetableResourceIT {
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restVegetableMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(vegetable)))
+            .perform(
+                put(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(vegetable))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Vegetable in the database
@@ -318,6 +337,7 @@ class VegetableResourceIT {
         restVegetableMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedVegetable.getId())
+                    .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedVegetable))
             )
@@ -360,6 +380,7 @@ class VegetableResourceIT {
         restVegetableMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedVegetable.getId())
+                    .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(partialUpdatedVegetable))
             )
@@ -388,6 +409,7 @@ class VegetableResourceIT {
         restVegetableMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, vegetable.getId())
+                    .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(vegetable))
             )
@@ -408,6 +430,7 @@ class VegetableResourceIT {
         restVegetableMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .with(csrf())
                     .contentType("application/merge-patch+json")
                     .content(TestUtil.convertObjectToJsonBytes(vegetable))
             )
@@ -427,7 +450,10 @@ class VegetableResourceIT {
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restVegetableMockMvc
             .perform(
-                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(vegetable))
+                patch(ENTITY_API_URL)
+                    .with(csrf())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(vegetable))
             )
             .andExpect(status().isMethodNotAllowed());
 
@@ -446,7 +472,7 @@ class VegetableResourceIT {
 
         // Delete the vegetable
         restVegetableMockMvc
-            .perform(delete(ENTITY_API_URL_ID, vegetable.getId()).accept(MediaType.APPLICATION_JSON))
+            .perform(delete(ENTITY_API_URL_ID, vegetable.getId()).with(csrf()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

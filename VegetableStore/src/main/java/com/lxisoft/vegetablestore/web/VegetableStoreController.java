@@ -60,7 +60,6 @@ public String createVegetable(@ModelAttribute Vegetable vegetable, Model model) 
     return "addVegetable";
 }
 
-
 @GetMapping("/select-vegetable")
 public String selectVegetable(@RequestParam("id")long id, Model model) {
 

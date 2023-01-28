@@ -1,11 +1,10 @@
 package com.lxisoft.vegetablestore.web.rest;
 
+import java.io.IOException;
 import com.lxisoft.vegetablestore.domain.Vegetable;
 import com.lxisoft.vegetablestore.repository.VegetableRepository;
 import com.lxisoft.vegetablestore.service.VegetableService;
 import com.lxisoft.vegetablestore.web.rest.errors.BadRequestAlertException;
-
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -50,7 +49,7 @@ public class VegetableResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/vegetables")
-    public ResponseEntity<Vegetable> createVegetable(@RequestBody Vegetable vegetable) throws URISyntaxException, IOException {
+    public ResponseEntity<Vegetable> createVegetable(@RequestBody Vegetable vegetable) throws URISyntaxException,IOException{
         log.debug("REST request to save Vegetable : {}", vegetable);
         if (vegetable.getId() != null) {
             throw new BadRequestAlertException("A new vegetable cannot already have an ID", ENTITY_NAME, "idexists");
@@ -76,7 +75,7 @@ public class VegetableResource {
     public ResponseEntity<Vegetable> updateVegetable(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody Vegetable vegetable
-    ) throws URISyntaxException, IOException {
+    ) throws URISyntaxException ,IOException{
         log.debug("REST request to update Vegetable : {}, {}", id, vegetable);
         if (vegetable.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

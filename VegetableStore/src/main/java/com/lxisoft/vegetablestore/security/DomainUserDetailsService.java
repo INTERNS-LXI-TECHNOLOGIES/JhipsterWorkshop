@@ -33,9 +33,11 @@ public class DomainUserDetailsService implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(final String login) {
-        log.debug("Authenticating {}", login);
+        log.debug("Authenticating xxxxxx {}", login);
+		System.out.println("#############################################"+login+"22222222");
 
         if (new EmailValidator().isValid(login, null)) {
+			
             return userRepository
                 .findOneWithAuthoritiesByEmailIgnoreCase(login)
                 .map(user -> createSpringSecurityUser(login, user))

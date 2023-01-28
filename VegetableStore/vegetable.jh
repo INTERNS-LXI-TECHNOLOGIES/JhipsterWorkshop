@@ -13,7 +13,7 @@ entity Vegetable {
 
 entity Category {
 id Long,
-	category String
+	categoryType String
 }
 
 

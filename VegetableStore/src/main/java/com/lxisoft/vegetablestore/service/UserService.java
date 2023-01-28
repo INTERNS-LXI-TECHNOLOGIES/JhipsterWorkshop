@@ -4,17 +4,20 @@ import com.lxisoft.vegetablestore.config.Constants;
 import com.lxisoft.vegetablestore.domain.Authority;
 import com.lxisoft.vegetablestore.domain.User;
 import com.lxisoft.vegetablestore.repository.AuthorityRepository;
+import com.lxisoft.vegetablestore.repository.PersistentTokenRepository;
 import com.lxisoft.vegetablestore.repository.UserRepository;
 import com.lxisoft.vegetablestore.security.AuthoritiesConstants;
 import com.lxisoft.vegetablestore.security.SecurityUtils;
 import com.lxisoft.vegetablestore.service.dto.AdminUserDTO;
 import com.lxisoft.vegetablestore.service.dto.UserDTO;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -36,12 +39,24 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final PersistentTokenRepository persistentTokenRepository;
+
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
+    private final CacheManager cacheManager;
+
+    public UserService(
+        UserRepository userRepository,
+        PasswordEncoder passwordEncoder,
+        PersistentTokenRepository persistentTokenRepository,
+        AuthorityRepository authorityRepository,
+        CacheManager cacheManager
+    ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.persistentTokenRepository = persistentTokenRepository;
         this.authorityRepository = authorityRepository;
+        this.cacheManager = cacheManager;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -52,6 +67,7 @@ public class UserService {
                 // activate given user for the registration key.
                 user.setActivated(true);
                 user.setActivationKey(null);
+                this.clearUserCaches(user);
                 log.debug("Activated user: {}", user);
                 return user;
             });
@@ -66,6 +82,7 @@ public class UserService {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 user.setResetKey(null);
                 user.setResetDate(null);
+                this.clearUserCaches(user);
                 return user;
             });
     }
@@ -77,6 +94,7 @@ public class UserService {
             .map(user -> {
                 user.setResetKey(RandomUtil.generateResetKey());
                 user.setResetDate(Instant.now());
+                this.clearUserCaches(user);
                 return user;
             });
     }
@@ -118,6 +136,7 @@ public class UserService {
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
+        this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
@@ -128,6 +147,7 @@ public class UserService {
         }
         userRepository.delete(existingUser);
         userRepository.flush();
+        this.clearUserCaches(existingUser);
         return true;
     }
 
@@ -161,6 +181,7 @@ public class UserService {
             user.setAuthorities(authorities);
         }
         userRepository.save(user);
+        this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
         return user;
     }
@@ -177,6 +198,7 @@ public class UserService {
             .filter(Optional::isPresent)
             .map(Optional::get)
             .map(user -> {
+                this.clearUserCaches(user);
                 user.setLogin(userDTO.getLogin().toLowerCase());
                 user.setFirstName(userDTO.getFirstName());
                 user.setLastName(userDTO.getLastName());
@@ -195,6 +217,7 @@ public class UserService {
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .forEach(managedAuthorities::add);
+                this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
                 return user;
             })
@@ -206,6 +229,7 @@ public class UserService {
             .findOneByLogin(login)
             .ifPresent(user -> {
                 userRepository.delete(user);
+                this.clearUserCaches(user);
                 log.debug("Deleted User: {}", user);
             });
     }
@@ -231,6 +255,7 @@ public class UserService {
                 }
                 user.setLangKey(langKey);
                 user.setImageUrl(imageUrl);
+                this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
             });
     }
@@ -247,6 +272,7 @@ public class UserService {
                 }
                 String encryptedPassword = passwordEncoder.encode(newPassword);
                 user.setPassword(encryptedPassword);
+                this.clearUserCaches(user);
                 log.debug("Changed password for User: {}", user);
             });
     }
@@ -272,6 +298,25 @@ public class UserService {
     }
 
     /**
+     * Persistent Token are used for providing automatic authentication, they should be automatically deleted after
+     * 30 days.
+     * <p>
+     * This is scheduled to get fired everyday, at midnight.
+     */
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void removeOldPersistentTokens() {
+        LocalDate now = LocalDate.now();
+        persistentTokenRepository
+            .findByTokenDateBefore(now.minusMonths(1))
+            .forEach(token -> {
+                log.debug("Deleting token {}", token.getSeries());
+                User user = token.getUser();
+                user.getPersistentTokens().remove(token);
+                persistentTokenRepository.delete(token);
+            });
+    }
+
+    /**
      * Not activated users should be automatically deleted after 3 days.
      * <p>
      * This is scheduled to get fired everyday, at 01:00 (am).
@@ -283,6 +328,7 @@ public class UserService {
             .forEach(user -> {
                 log.debug("Deleting not activated user {}", user.getLogin());
                 userRepository.delete(user);
+                this.clearUserCaches(user);
             });
     }
 
@@ -293,5 +339,12 @@ public class UserService {
     @Transactional(readOnly = true)
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+    }
+
+    private void clearUserCaches(User user) {
+        Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE)).evict(user.getLogin());
+        if (user.getEmail() != null) {
+            Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE)).evict(user.getEmail());
+        }
     }
 }

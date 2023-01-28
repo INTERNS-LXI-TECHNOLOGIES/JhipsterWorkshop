@@ -1,17 +1,19 @@
 package com.lxisoft.vegetablestore.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.io.Serializable;
+import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.Serializable;
-import java.util.Base64;
-import javax.persistence.*;
 
 /**
  * A Vegetable.
  */
 @Entity
 @Table(name = "vegetable")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Vegetable implements Serializable {
 
@@ -34,14 +36,8 @@ public class Vegetable implements Serializable {
     @Column(name = "min_order_quantity")
     private String minOrderQuantity;
 
-
-    @Transient
-    private MultipartFile imageFile;
-
-
     @Transient
     private String base64Image;
-
 
     @Lob
     @Column(name = "image")
@@ -49,6 +45,9 @@ public class Vegetable implements Serializable {
 
     @Column(name = "image_content_type")
     private String imageContentType;
+
+    @Transient
+	private MultipartFile imageFile;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "vegetables" }, allowSetters = true)
@@ -99,15 +98,6 @@ public class Vegetable implements Serializable {
         return this.stock;
     }
 
-
-    public void setImageFile(MultipartFile imageFile) {
-        this.imageFile = imageFile;
-    }
-
-    public MultipartFile getImageFile() {
-        return imageFile;
-    }
-
     public Vegetable stock(String stock) {
         this.setStock(stock);
         return this;
@@ -131,8 +121,6 @@ public class Vegetable implements Serializable {
     }
 
     public String getBase64Image() {
-
-
         return this.base64Image;
     }
 
@@ -183,6 +171,14 @@ public class Vegetable implements Serializable {
         this.setCategory(category);
         return this;
     }
+
+    public MultipartFile getImageFile() {
+		return imageFile;
+	}
+
+	public void setImageFile(MultipartFile imageFile) {
+		this.imageFile = imageFile;
+	}
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

@@ -2,6 +2,7 @@ package com.lxisoft.vegetablestore.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -68,9 +70,18 @@ class UserResourceIT {
     private EntityManager em;
 
     @Autowired
+    private CacheManager cacheManager;
+
+    @Autowired
     private MockMvc restUserMockMvc;
 
     private User user;
+
+    @BeforeEach
+    public void setup() {
+        cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).clear();
+        cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE).clear();
+    }
 
     /**
      * Create a User.
@@ -126,7 +137,10 @@ class UserResourceIT {
 
         restUserMockMvc
             .perform(
-                post("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                post("/api/admin/users")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                    .with(csrf())
             )
             .andExpect(status().isCreated());
 
@@ -163,7 +177,10 @@ class UserResourceIT {
         // An entity with an existing ID cannot be created, so this API call must fail
         restUserMockMvc
             .perform(
-                post("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                post("/api/admin/users")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                    .with(csrf())
             )
             .andExpect(status().isBadRequest());
 
@@ -192,7 +209,10 @@ class UserResourceIT {
         // Create the User
         restUserMockMvc
             .perform(
-                post("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                post("/api/admin/users")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                    .with(csrf())
             )
             .andExpect(status().isBadRequest());
 
@@ -221,7 +241,10 @@ class UserResourceIT {
         // Create the User
         restUserMockMvc
             .perform(
-                post("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                post("/api/admin/users")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                    .with(csrf())
             )
             .andExpect(status().isBadRequest());
 
@@ -254,6 +277,8 @@ class UserResourceIT {
         // Initialize the database
         userRepository.saveAndFlush(user);
 
+        assertThat(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).get(user.getLogin())).isNull();
+
         // Get the user
         restUserMockMvc
             .perform(get("/api/admin/users/{login}", user.getLogin()))
@@ -265,6 +290,8 @@ class UserResourceIT {
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
             .andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGEURL))
             .andExpect(jsonPath("$.langKey").value(DEFAULT_LANGKEY));
+
+        assertThat(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).get(user.getLogin())).isNotNull();
     }
 
     @Test
@@ -301,7 +328,10 @@ class UserResourceIT {
 
         restUserMockMvc
             .perform(
-                put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                put("/api/admin/users")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                    .with(csrf())
             )
             .andExpect(status().isOk());
 
@@ -345,7 +375,10 @@ class UserResourceIT {
 
         restUserMockMvc
             .perform(
-                put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                put("/api/admin/users")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                    .with(csrf())
             )
             .andExpect(status().isOk());
 
@@ -400,7 +433,10 @@ class UserResourceIT {
 
         restUserMockMvc
             .perform(
-                put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                put("/api/admin/users")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                    .with(csrf())
             )
             .andExpect(status().isBadRequest());
     }
@@ -443,7 +479,10 @@ class UserResourceIT {
 
         restUserMockMvc
             .perform(
-                put("/api/admin/users").contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                put("/api/admin/users")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(managedUserVM))
+                    .with(csrf())
             )
             .andExpect(status().isBadRequest());
     }
@@ -457,8 +496,10 @@ class UserResourceIT {
 
         // Delete the user
         restUserMockMvc
-            .perform(delete("/api/admin/users/{login}", user.getLogin()).accept(MediaType.APPLICATION_JSON))
+            .perform(delete("/api/admin/users/{login}", user.getLogin()).accept(MediaType.APPLICATION_JSON).with(csrf()))
             .andExpect(status().isNoContent());
+
+        assertThat(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).get(user.getLogin())).isNull();
 
         // Validate the database is empty
         assertPersistedUsers(users -> assertThat(users).hasSize(databaseSizeBeforeDelete - 1));

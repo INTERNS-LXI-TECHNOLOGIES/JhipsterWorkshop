@@ -13,19 +13,9 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
-eureka:
-  client:
-    enabled: false
-  instance:
-    appname: vegetablestore
-    instanceId: vegetablestore:${spring.application.instance-id:${random.value}}
-
 spring:
   application:
     name: vegetablestore
-  cloud:
-    config:
-      enabled: false
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: test
@@ -79,12 +69,9 @@ jhipster:
       port: 5000
       queue-size: 512
   security:
-    authentication:
-      jwt:
-        # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-        base64-secret: YWMxZWZkMWU3N2E2OTI0YWQ4YmE5MGRmZjkyNzhhMzMxN2Y5OWYwMjA1ZjE0ZGM0Mjg3NzdkM2VmYjIyNjU2MGY3Nzg5YjVkMGMzMDBjZTNlZTdmYzE5ZmE0NmUyZWNiMDlkMDkzNGVhZDkzNzRmNGMzMzkwMjQ0MzI5NTczNDI=
-        # Token is valid 24 hours
-        token-validity-in-seconds: 86400
+    remember-me:
+      # security key (this key should be unique for your application, and kept secret)
+      key: 2568f63d5075c98fe63409440ae3d2472bfd534664f82bc2e45138f4ab01c14e8e3f1bb25d4f870471275709ad3294f21fb0
 
 # ===================================================================
 # Application specific properties

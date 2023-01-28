@@ -5,12 +5,15 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Category.
  */
 @Entity
 @Table(name = "category")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Category implements Serializable {
 
@@ -25,6 +28,7 @@ public class Category implements Serializable {
     private String categoryType;
 
     @OneToMany(mappedBy = "category")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "category" }, allowSetters = true)
     private Set<Vegetable> vegetables = new HashSet<>();
 
@@ -47,7 +51,7 @@ public class Category implements Serializable {
         return this.categoryType;
     }
 
-    public Category category(String categoryType) {
+    public Category categoryType(String categoryType) {
         this.setCategoryType(categoryType);
         return this;
     }
@@ -111,7 +115,7 @@ public class Category implements Serializable {
     public String toString() {
         return "Category{" +
             "id=" + getId() +
-            ", category='" + getCategoryType() + "'" +
+            ", categoryType='" + getCategoryType() + "'" +
             "}";
     }
 }
