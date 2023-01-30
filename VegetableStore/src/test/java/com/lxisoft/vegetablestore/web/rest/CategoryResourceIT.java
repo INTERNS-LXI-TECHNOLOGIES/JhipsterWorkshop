@@ -95,7 +95,12 @@ class CategoryResourceIT {
         List<Category> categoryList = categoryRepository.findAll();
         assertThat(categoryList).hasSize(databaseSizeBeforeCreate + 1);
         Category testCategory = categoryList.get(categoryList.size() - 1);
+<<<<<<< HEAD
         assertThat(testCategory.getCategoryType()).isEqualTo(DEFAULT_CATEGORY_TYPE);
+=======
+       assertThat(testCategory.getCategoryType()).isEqualTo(DEFAULT_CATEGORY);
+
+>>>>>>> 79bd7058ce83cb415a0ecc80378110cb1c06fb4a
     }
 
     @Test
@@ -185,7 +190,12 @@ class CategoryResourceIT {
         List<Category> categoryList = categoryRepository.findAll();
         assertThat(categoryList).hasSize(databaseSizeBeforeUpdate);
         Category testCategory = categoryList.get(categoryList.size() - 1);
+<<<<<<< HEAD
         assertThat(testCategory.getCategoryType()).isEqualTo(UPDATED_CATEGORY_TYPE);
+=======
+        assertThat(testCategory.getCategoryType()).isEqualTo(UPDATED_CATEGORY);
+
+>>>>>>> 79bd7058ce83cb415a0ecc80378110cb1c06fb4a
     }
 
     @Test
@@ -278,7 +288,12 @@ class CategoryResourceIT {
         List<Category> categoryList = categoryRepository.findAll();
         assertThat(categoryList).hasSize(databaseSizeBeforeUpdate);
         Category testCategory = categoryList.get(categoryList.size() - 1);
+<<<<<<< HEAD
         assertThat(testCategory.getCategoryType()).isEqualTo(UPDATED_CATEGORY_TYPE);
+=======
+        assertThat(testCategory.getCategoryType()).isEqualTo(UPDATED_CATEGORY);
+
+>>>>>>> 79bd7058ce83cb415a0ecc80378110cb1c06fb4a
     }
 
     @Test

@@ -27,6 +27,7 @@ public class Category implements Serializable {
     @Column(name = "category")
     private String categoryType;
 
+
     @OneToMany(mappedBy = "category")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "category" }, allowSetters = true)
@@ -58,6 +59,7 @@ public class Category implements Serializable {
 
     public void setCategoryType(String categoryType) {
         this.categoryType = categoryType;
+
     }
 
     public Set<Vegetable> getVegetables() {
@@ -115,7 +117,12 @@ public class Category implements Serializable {
     public String toString() {
         return "Category{" +
             "id=" + getId() +
+<<<<<<< HEAD
             ", categoryType='" + getCategoryType() + "'" +
+=======
+            ", category='" + getCategoryType() + "'" +
+
+>>>>>>> 79bd7058ce83cb415a0ecc80378110cb1c06fb4a
             "}";
     }
 }

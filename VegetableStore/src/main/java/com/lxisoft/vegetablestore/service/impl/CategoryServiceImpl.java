@@ -47,6 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
             .map(existingCategory -> {
                 if (category.getCategoryType() != null) {
                     existingCategory.setCategoryType(category.getCategoryType());
+
                 }
 
                 return existingCategory;
