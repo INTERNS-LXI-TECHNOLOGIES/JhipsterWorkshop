@@ -53,8 +53,6 @@ return "addVegetable";
 @PostMapping("/create-vegetable")
 public String createVegetable(@ModelAttribute Vegetable vegetable, Model model) throws IOException {
 
-    System.out.println("Vegetable to be saved: "+vegetable);
-
     vegetableService.save(vegetable);
 
     model.addAttribute("categories",categoryService.findAll());
@@ -102,9 +100,6 @@ public String findVegetablesByCategorId(@RequestParam(required=false,name="id")l
 
    categoryService.save(cat);
 
-    System.out.println("Category to be saved: "+cat);
-
-
         model.addAttribute("categories",categoryService.findAll());
         return "addVegetable";
     }
@@ -141,6 +136,12 @@ public String changeLanguage(@RequestParam String language,Model model){
 
     return "login";
 }
+
+/*@GetMapping("/logout")
+public String logout(){
+
+return "login";
+}*/
 
 }
 
