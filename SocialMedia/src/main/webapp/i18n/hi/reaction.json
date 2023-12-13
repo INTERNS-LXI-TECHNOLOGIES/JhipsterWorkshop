@@ -1,0 +1,27 @@
+{
+  "socialMediaApp": {
+    "reaction": {
+      "home": {
+        "title": "Reactions",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "नया Reaction बनाएँ",
+        "createOrEditLabel": "Reaction बनाएँ या संपादित करें",
+        "notFound": "No Reactions found"
+      },
+      "created": "एक नया Reaction [identifier: {{ param }}] तैयार है",
+      "updated": "एक Reaction [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "Reaction [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "Reaction [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "Reaction"
+      },
+      "id": "ID",
+      "time": "Time",
+      "reactionMode": "Reaction Mode",
+      "reactedBy": "Reacted By",
+      "post": "Post"
+    }
+  }
+}

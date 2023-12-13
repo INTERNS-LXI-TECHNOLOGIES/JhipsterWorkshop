@@ -1,0 +1,26 @@
+{
+  "socialMediaApp": {
+    "appUser": {
+      "home": {
+        "title": "AppUsers",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "नया App User बनाएँ",
+        "createOrEditLabel": "App User बनाएँ या संपादित करें",
+        "notFound": "No App Users found"
+      },
+      "created": "एक नया App User [identifier: {{ param }}] तैयार है",
+      "updated": "एक App User [identifier: {{ param }}] का अद्यतन हुआ है",
+      "deleted": "App User [identifier: {{ param }}] हटा दिया है",
+      "delete": {
+        "question": "App User [id: {{ id }}] हटाने की पुष्टि करें"
+      },
+      "detail": {
+        "title": "App User"
+      },
+      "id": "ID",
+      "phone": "Phone",
+      "user": "User",
+      "post": "Post"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "annotations": {
+    "changelogDate": "20231213061016"
+  },
+  "applications": "*",
+  "entityTableName": "app_user",
+  "fields": [
+    {
+      "fieldName": "phone",
+      "fieldType": "String",
+      "fieldValidateRules": ["unique", "pattern"],
+      "fieldValidateRulesPattern": "^\\d{10}$"
+    }
+  ],
+  "name": "AppUser",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "relationshipName": "user",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one",
+      "relationshipWithBuiltInEntity": true
+    },
+    {
+      "otherEntityName": "post",
+      "relationshipName": "post",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

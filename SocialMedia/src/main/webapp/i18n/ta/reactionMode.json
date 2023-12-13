@@ -1,0 +1,10 @@
+{
+  "socialMediaApp": {
+    "ReactionMode": {
+      "null": "",
+      "LIKE": "Like",
+      "HEART": "Heart",
+      "DISLIKE": "Dislike"
+    }
+  }
+}

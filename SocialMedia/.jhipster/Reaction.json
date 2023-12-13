@@ -1,0 +1,30 @@
+{
+  "annotations": {
+    "changelogDate": "20231213061216"
+  },
+  "applications": "*",
+  "entityTableName": "reaction",
+  "fields": [
+    {
+      "fieldName": "time",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "reactionMode",
+      "fieldType": "ReactionMode",
+      "fieldValues": "LIKE (Like),HEART (Heart),DISLIKE (Dislike)"
+    }
+  ],
+  "name": "Reaction",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "appUser",
+      "relationshipName": "reactedBy",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

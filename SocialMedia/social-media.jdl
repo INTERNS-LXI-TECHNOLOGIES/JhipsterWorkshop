@@ -1,0 +1,42 @@
+entity AppUser {
+	phone String unique pattern(/^\d{10}$/)
+}
+entity Post {
+	createdAt Instant
+    content String maxlength(1024)
+    hashTags String
+}
+entity Reaction {
+	time Instant
+    reactionMode ReactionMode
+}
+enum ReactionMode {
+	LIKE("Like")
+    HEART("Heart")
+    DISLIKE("Dislike")
+}
+
+relationship OneToOne {
+	AppUser{User(login)} to User with builtInEntity
+}
+
+relationship OneToMany {
+	Post{like} to Reaction
+    AppUser{post} to Post
+}
+
+relationship ManyToOne {
+	Reaction{reactedBy} to AppUser
+}
+// Set pagination options
+paginate Post with infinite-scroll
+paginate * with pagination
+
+// Use Data Transfer Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

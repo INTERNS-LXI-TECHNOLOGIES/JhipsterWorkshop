@@ -1,0 +1,88 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-reaction-heading" data-cy="ReactionCreateUpdateHeading" jhiTranslate="socialMediaApp.reaction.home.createOrEditLabel">
+        Create or edit a Reaction
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="socialMediaApp.reaction.time" for="field_time">Time</label>
+          <div class="d-flex">
+            <input
+              id="field_time"
+              data-cy="time"
+              type="datetime-local"
+              class="form-control"
+              name="time"
+              formControlName="time"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="socialMediaApp.reaction.reactionMode" for="field_reactionMode">Reaction Mode</label>
+          <select class="form-control" name="reactionMode" formControlName="reactionMode" id="field_reactionMode" data-cy="reactionMode">
+            <option [ngValue]="null">{{ 'socialMediaApp.ReactionMode.null' | translate }}</option>
+            @for (reactionMode of reactionModeValues; track $index) {
+              <option [value]="reactionMode">{{ 'socialMediaApp.ReactionMode.' + reactionMode | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="socialMediaApp.reaction.reactedBy" for="field_reactedBy">Reacted By</label>
+          <select
+            class="form-control"
+            id="field_reactedBy"
+            data-cy="reactedBy"
+            name="reactedBy"
+            formControlName="reactedBy"
+            [compareWith]="compareAppUser"
+          >
+            <option [ngValue]="null"></option>
+            @for (appUserOption of appUsersSharedCollection; track $index) {
+              <option [ngValue]="appUserOption">{{ appUserOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="socialMediaApp.reaction.post" for="field_post">Post</label>
+          <select class="form-control" id="field_post" data-cy="post" name="post" formControlName="post" [compareWith]="comparePost">
+            <option [ngValue]="null"></option>
+            @for (postOption of postsSharedCollection; track $index) {
+              <option [ngValue]="postOption">{{ postOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
